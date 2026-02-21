@@ -1,0 +1,29 @@
+name: Build ShardSMP
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn package -B
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: ShardSMP
+          path: target/ShardSMP.jar
