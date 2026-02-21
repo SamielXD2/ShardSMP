@@ -1,5 +1,7 @@
 package dev.samiel.shardsmp;
 
+import dev.samiel.shardsmp.listener.ShardListener;
+import dev.samiel.shardsmp.manager.ShardManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShardSMP extends JavaPlugin {
