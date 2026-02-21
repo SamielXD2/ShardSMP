@@ -24,7 +24,9 @@ public class ShardSMP extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        shardManager.saveData();
+    }
 
     public ShardManager getShardManager() {
         return shardManager;
