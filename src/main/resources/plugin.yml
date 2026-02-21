@@ -1,7 +1,14 @@
-
 name: ShardSMP
 version: 1.0
 main: dev.samiel.shardsmp.ShardSMP
 api-version: 1.21
 description: Shard-based kill streak system
 author: Samiel
+
+commands:
+  shards:
+    description: Check your current shard count
+    usage: /shards
+  spl:
+    description: Spawn a dummy to test if the plugins works lol since I'm lonely - samiel
+    usage: /spl
