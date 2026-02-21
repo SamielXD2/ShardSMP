@@ -1,0 +1,6 @@
+name: ShardSMP
+version: 1.0
+main: dev.samiel.shardsmp.ShardSMP
+api-version: 1.20
+description: Shard-based kill streak system
+author: Samiel
