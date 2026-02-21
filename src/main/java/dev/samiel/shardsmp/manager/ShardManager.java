@@ -110,21 +110,21 @@ public class ShardManager {
 
     public void useAbility(Player player) {
         player.getWorld().getNearbyEntities(player.getLocation(), 10, 10, 10).stream()
-                .filter(e -> e instanceof Player && !e.equals(player))
-                .forEach(e -> ((Player) e).addPotionEffect(
+                .filter(e -> e instanceof org.bukkit.entity.LivingEntity && !e.equals(player))
+                .forEach(e -> ((org.bukkit.entity.LivingEntity) e).addPotionEffect(
                         new PotionEffect(PotionEffectType.SLOWNESS, 60, 4, true, true)
                 ));
         player.sendMessage("\u00a76[\u00a7eShardSMP\u00a76] \u00a7cAbility used! Slowness applied to nearby enemies.");
     }
 
     public boolean isAbilityItem(ItemStack item) {
-        if (item == null || item.getType() != Material.NETHER_STAR) return false;
+        if (item == null || item.getType() != Material.BLAZE_ROD) return false;
         ItemMeta meta = item.getItemMeta();
         return meta != null && ABILITY_ITEM_NAME.equals(meta.getDisplayName());
     }
 
     private ItemStack createAbilityItem() {
-        ItemStack item = new ItemStack(Material.NETHER_STAR);
+        ItemStack item = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ABILITY_ITEM_NAME);
         item.setItemMeta(meta);
