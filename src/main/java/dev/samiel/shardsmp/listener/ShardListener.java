@@ -11,10 +11,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class ShardListener implements Listener {
 
     private final ShardSMP plugin;
     private final ShardManager shardManager;
+    private final Map<UUID, Long> abilityCooldowns = new HashMap<>();
+    private static final long ABILITY_COOLDOWN_MS = 5000;
 
     public ShardListener(ShardSMP plugin, ShardManager shardManager) {
         this.plugin = plugin;
@@ -50,6 +56,16 @@ public class ShardListener implements Listener {
         Player player = event.getPlayer();
         if (shardManager.getShards(player) < 6) return;
         if (!shardManager.isAbilityItem(player.getInventory().getItemInMainHand())) return;
+
+        long now = System.currentTimeMillis();
+        Long last = abilityCooldowns.get(player.getUniqueId());
+        if (last != null && now - last < ABILITY_COOLDOWN_MS) {
+            long remaining = (ABILITY_COOLDOWN_MS - (now - last)) / 1000;
+            player.sendMessage("\u00a76[\u00a7eShardSMP\u00a76] \u00a7cAbility on cooldown for " + remaining + "s");
+            return;
+        }
+
+        abilityCooldowns.put(player.getUniqueId(), now);
         shardManager.useAbility(player);
     }
 }
