@@ -2,13 +2,16 @@ package dev.samiel.shardsmp.manager;
 
 import dev.samiel.shardsmp.ShardSMP;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.NamespacedKey;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +24,6 @@ public class ShardManager {
 
     private static final int STARTING_SHARDS = 3;
     private static final int MAX_SHARDS = 6;
-    private static final UUID HEALTH_MODIFIER_UUID = UUID.fromString("a8f3c2d1-bb44-4e90-9f6e-1234567890ab");
     private static final String HEALTH_MODIFIER_NAME = "shard_extra_hearts";
     private static final String ABILITY_ITEM_NAME = "\u00a76Shard Ability";
 
@@ -56,22 +58,23 @@ public class ShardManager {
         updateHealth(player, shards);
         updateAbilityItem(player, shards);
         player.sendMessage("\u00a76[\u00a7eShardSMP\u00a76] \u00a7fShards: \u00a7e" + shards + "\u00a7f/" + MAX_SHARDS);
-        player.playNote(player.getLocation(), org.bukkit.Instrument.PIANO, org.bukkit.Note.natural(1, org.bukkit.Note.Tone.A));
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
     }
 
     private void updateHealth(Player player, int shards) {
-        var attr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        var attr = player.getAttribute(Attribute.MAX_HEALTH);
         if (attr == null) return;
         attr.getModifiers().stream()
-                .filter(m -> m.getName().equals(HEALTH_MODIFIER_NAME))
+                .filter(m -> m.getKey().getKey().equals(HEALTH_MODIFIER_NAME))
                 .forEach(attr::removeModifier);
 
         if (shards >= 5) {
+            NamespacedKey key = new NamespacedKey(plugin, HEALTH_MODIFIER_NAME);
             AttributeModifier mod = new AttributeModifier(
-                    HEALTH_MODIFIER_UUID,
-                    HEALTH_MODIFIER_NAME,
+                    key,
                     4.0,
-                    AttributeModifier.Operation.ADD_NUMBER
+                    AttributeModifier.Operation.ADD_NUMBER,
+                    EquipmentSlot.HAND
             );
             attr.addModifier(mod);
         }
@@ -95,10 +98,10 @@ public class ShardManager {
 
     public void applyPassiveEffects(Player player) {
         int shards = getShards(player);
-        player.removePotionEffect(PotionEffectType.SLOW);
+        player.removePotionEffect(PotionEffectType.SLOWNESS);
         player.removePotionEffect(PotionEffectType.SLOW_FALLING);
         if (shards == 1) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 0, true, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, true, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 40, 0, true, false));
         } else if (shards == 2) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 40, 0, true, false));
@@ -109,7 +112,7 @@ public class ShardManager {
         player.getWorld().getNearbyEntities(player.getLocation(), 10, 10, 10).stream()
                 .filter(e -> e instanceof Player && !e.equals(player))
                 .forEach(e -> ((Player) e).addPotionEffect(
-                        new PotionEffect(PotionEffectType.SLOW, 60, 4, true, true)
+                        new PotionEffect(PotionEffectType.SLOWNESS, 60, 4, true, true)
                 ));
         player.sendMessage("\u00a76[\u00a7eShardSMP\u00a76] \u00a7cAbility used! Slowness applied to nearby enemies.");
     }
