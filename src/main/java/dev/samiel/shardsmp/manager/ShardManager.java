@@ -7,7 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -62,7 +62,7 @@ public class ShardManager {
     }
 
     private void updateHealth(Player player, int shards) {
-        var attr = player.getAttribute(Attribute.MAX_HEALTH);
+        var attr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (attr == null) return;
         attr.getModifiers().stream()
                 .filter(m -> m.getKey().getKey().equals(HEALTH_MODIFIER_NAME))
@@ -74,7 +74,7 @@ public class ShardManager {
                     key,
                     4.0,
                     AttributeModifier.Operation.ADD_NUMBER,
-                    EquipmentSlot.HAND
+                    EquipmentSlotGroup.HAND
             );
             attr.addModifier(mod);
         }
