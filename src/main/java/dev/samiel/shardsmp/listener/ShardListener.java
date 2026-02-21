@@ -5,6 +5,7 @@ import dev.samiel.shardsmp.manager.ShardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -31,6 +32,15 @@ public class ShardListener implements Listener {
         shardManager.resetOnDeath(killed);
         if (killed.getKiller() != null) {
             shardManager.addShard(killed.getKiller());
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) return;
+        String name = event.getEntity().getCustomName();
+        if (name != null && name.equals("\u00a7cShard Dummy")) {
+            shardManager.addShard(event.getEntity().getKiller());
         }
     }
 
