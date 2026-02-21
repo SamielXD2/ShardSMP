@@ -12,3 +12,7 @@ commands:
   spl:
     description: Spawn a dummy to test if the plugins works lol since I'm lonely - samiel
     usage: /spl
+    shardadmin:
+    description: Admin commands for ShardX
+    usage: /shardadmin <set|give|take|reset|check> <player> [amount]
+    permission: shardx.admin
