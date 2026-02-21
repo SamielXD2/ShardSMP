@@ -14,8 +14,9 @@ public class ShardSMP extends JavaPlugin {
         shardManager = new ShardManager(this);
         getServer().getPluginManager().registerEvents(new ShardListener(this, shardManager), this);
         ShardCommand shardCommand = new ShardCommand(this, shardManager);
-        getCommand("shards").setExecutor(shardCommand);
+        getCommand("shardx").setExecutor(shardCommand);
         getCommand("spl").setExecutor(shardCommand);
+        getCommand("shardadmin").setExecutor(shardCommand);
         getServer().getScheduler().runTaskTimer(this, () -> {
             for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
                 shardManager.applyPassiveEffects(player);
