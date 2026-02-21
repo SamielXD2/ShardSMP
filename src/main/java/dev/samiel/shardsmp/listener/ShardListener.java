@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
@@ -30,6 +31,11 @@ public class ShardListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         shardManager.initPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        shardManager.savePlayer(event.getPlayer());
     }
 
     @EventHandler
