@@ -6,13 +6,12 @@ description: Shard-based kill streak system
 author: Samiel
 
 commands:
-  shards:
-    description: Check your current shard count
-    usage: /shards
+  shardx:
+    description: Check your ShardX count
+    usage: /shardx
   spl:
-    description: Spawn a dummy to test if the plugins works lol since I'm lonely - samiel
+    description: Spawn a dummy to test shards
     usage: /spl
-    shardadmin:
+  shardadmin:
     description: Admin commands for ShardX
     usage: /shardadmin <set|give|take|reset|check> <player> [amount]
-    permission: shardx.admin
